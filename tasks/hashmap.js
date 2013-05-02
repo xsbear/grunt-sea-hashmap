@@ -2,7 +2,7 @@
  * grunt-sea-hashmap
  * https://github.com/xsbear/grunt-sea-hashmap
  *
- * Copyright (c) 2013 huangwenping
+ * Copyright (c) 2013 HuangWenping
  * Licensed under the MIT license.
  */
 
@@ -22,9 +22,9 @@ module.exports = function(grunt) {
         var options = this.options({
             algorithm: 'md5',
             encoding: 'utf8',
-            map_tmpl: 'seajs.config({map : <%= mapArray %>});',
+            map_tmpl: 'seajs.config({map: <%= mapArray %>});',
             map_pattern: /[^"]+\?\w+/g,
-            use_pattern: /data-main="([\/\w\-]+)\?\w*"/,
+            use_pattern: /data-main="([^"]+)\?\w*"/,
             use_replace: 'data-main="$1?{{hash}}"'
         });
 
