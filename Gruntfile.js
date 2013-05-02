@@ -2,7 +2,7 @@
  * grunt-sea-hashmap
  * https://github.com/xsbear/grunt-sea-hashmap
  *
- * Copyright (c) 2013 huangwenping
+ * Copyright (c) 2013 HuangWenping
  * Licensed under the MIT license.
  */
 

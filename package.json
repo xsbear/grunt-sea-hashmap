@@ -1,10 +1,10 @@
 {
   "name": "grunt-sea-hashmap",
   "description": "Generate a hash mapping for seajs modules when building, in order to burst cache.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/xsbear/grunt-sea-hashmap",
   "author": {
-    "name": "huangwenping",
+    "name": "HuangWenping",
     "email": "xsbear@gmail.com"
   },
   "repository": {

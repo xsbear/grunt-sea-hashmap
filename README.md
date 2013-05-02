@@ -62,11 +62,21 @@ Default value: `/[^"]+\?\w+/g`
 
 RegExp to extract hash map from original config file. If hash doesn't changed, module file will not copy to build directory, that could reduce build task.
 
+#### options.build_dest
+Type: `String`
+
+Destination of moudle files which should to build.
+
+#### options.use_src
+Type: `String`
+
+File of the sea module use, modify the hash after script source, in order to burst cache.
+
 #### options.use_pattern
 Type: `RegExp`
-Default value: `/data-main="([\/\w\-]+)\?\w*"/`
+Default value: `/data-main="([^"]+)\?\w*"/`
 
-RegExp to replace hash of script source which the sea module use, in order to burst cache.
+RegExp to find use source.
 
 #### options.use_replace
 Type: `String`
@@ -101,4 +111,10 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-* 0.1.0 -  First release
+**May 2nd, 2013** `0.1.1`
+
+Minor fix.
+
+**May 2nd, 2013** `0.1.0`
+
+First release.
