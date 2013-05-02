@@ -22,27 +22,27 @@ var grunt = require('grunt');
     test.ifError(value)
 */
 
-exports.sea_hashmap = {
+exports.hashmap = {
   setUp: function(done) {
     // setup here if necessary
     done();
   },
-  default_options: function(test) {
+  mapfile: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
+    var actual = grunt.file.read('tmp/map-config.js');
+    var expected = grunt.file.read('test/expected/map-config.js');
     test.equal(actual, expected, 'should describe what the default behavior is.');
 
     test.done();
   },
-  custom_options: function(test) {
+  usefile: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+    var actual = grunt.file.read('tmp/use.html');
+    var expected = grunt.file.read('test/expected/use.html');
+    test.equal(actual, expected, 'should describe what the default behavior is.');
 
     test.done();
-  },
+  }
 };

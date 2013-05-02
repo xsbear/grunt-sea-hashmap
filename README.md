@@ -17,14 +17,14 @@ One the plugin has been installed, it may be enabled inside your Gruntfile with 
 grunt.loadNpmTasks('grunt-sea-hashmap');
 ```
 
-## The "sea_hashmap" task
+## The "hashmap" task
 
 ### Overview
-In your project's Gruntfile, add a section named `sea_hashmap` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `hashmap` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  sea_hashmap: {
+  hashmap: {
     options: {
       // Task-specific options go here.
     },
@@ -37,48 +37,63 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.algorithm
 Type: `String`
-Default value: `',  '`
+Default value: `'md5'`
 
-A string value that is used to do something with whatever.
+Specific algorithm to generate hash.
 
-#### options.punctuation
+
+#### options.encoding
 Type: `String`
-Default value: `'.'`
+Default value: `'utf8'`
 
-A string value that is used to do something else with whatever else.
+Specific file encoding.
+
+#### options.map_tmpl
+Type: `String`
+Default value: `'seajs.config({map : <%= mapArray %>});'`
+
+Template of Hash map config  file.
+
+#### options.map_pattern
+Type: `RegExp`
+Default value: `/[^"]+\?\w+/g`
+
+RegExp to extract hash map from original config file. If hash doesn't changed, module file will not copy to build directory, that could reduce build task.
+
+#### options.use_pattern
+Type: `RegExp`
+Default value: `/data-main="([\/\w\-]+)\?\w*"/`
+
+RegExp to replace hash of script source which the sea module use, in order to burst cache.
+
+#### options.use_replace
+Type: `String`
+Default value: `'data-main="$1?{{hash}}'`
+
+Replace string of use_pattern, `'{{hash}}'` will replace with the generated hash.
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
 
 ```js
 grunt.initConfig({
-  sea_hashmap: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-})
-```
-
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
-
-```js
-grunt.initConfig({
-  sea_hashmap: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
+  hashmap: {
+    tests: {
+        options: {
+            use_src: 'tmp/use.html',
+            build_dest: 'tmp/.build'
+        },
+        files: [
+          {
+            cwd: 'test/fixtures/page',
+            src: '*.js',
+            dest: 'tmp/map-config.js'
+          }
+        ]
+    }
+  }
 })
 ```
 
@@ -86,4 +101,4 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+* 0.1.0 -  First release
