@@ -50,39 +50,29 @@ Default value: `'utf8'`
 
 Specific file encoding.
 
-#### options.map_tmpl
+#### options.map_tpl
 Type: `String`
-Default value: `'seajs.config({map : <%= mapArray %>});'`
+Default value: `path.join(__dirname, 'map.tpl')`
 
-Template of Hash map config  file.
+Path of hash map template file.
 
-#### options.map_pattern
+#### options.MAP_FILE_RE
 Type: `RegExp`
 Default value: `/[^"]+\?\w+/g`
 
 RegExp to extract hash map from original config file. If hash doesn't changed, module file will not copy to build directory, that could reduce build task.
+
+#### options.MAP_BLOCK_RE
+Type: `RegExp`
+Default value: `/\/\*map start\*\/[\s\S]*\/\*map end\*\//`
+
+RegExp to cut map config block, in order to insert a new map config block into the dest config file. It related with the content of  `map_tpl`.
 
 #### options.build_dest
 Type: `String`
 
 Destination of moudle files which should to build.
 
-#### options.use_src
-Type: `String`
-
-File of the sea module use, modify the hash after script source, in order to burst cache.
-
-#### options.use_pattern
-Type: `RegExp`
-Default value: `/data-main="([^"]+)\?\w*"/`
-
-RegExp to find use source.
-
-#### options.use_replace
-Type: `String`
-Default value: `'data-main="$1?{{hash}}'`
-
-Replace string of use_pattern, `'{{hash}}'` will replace with the generated hash.
 
 ### Usage Examples
 
@@ -92,7 +82,6 @@ grunt.initConfig({
   hashmap: {
     tests: {
         options: {
-            use_src: 'tmp/use.html',
             build_dest: 'tmp/.build'
         },
         files: [
@@ -111,6 +100,10 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+**May 16nd, 2013** `0.2.0`
+
+Remove use_src option, just focus on generating hash map config.
+
 **May 2nd, 2013** `0.1.1`
 
 Minor fix.

@@ -1,4 +1,8 @@
-seajs.config({map : [
+/*map start*/
+seajs.production = true;
+if(seajs.production){
+    seajs.config({
+        map: [
 	[
 		"test/fixtures/page/a.js",
 		"test/fixtures/page/a.js?31e9a03b5c879a4bdf26de1d8604a4b4"
@@ -11,4 +15,13 @@ seajs.config({map : [
 		"test/fixtures/page/c.js",
 		"test/fixtures/page/c.js?8bcb6c8feee2035a221fd905a0e7867a"
 	]
-]});
+]
+    });
+}
+/*map end*/
+seajs.config({
+  // Configure alias
+  alias: {
+    'jquery': 'lib/jquery/1.8.3/jquery.min'
+  }
+});

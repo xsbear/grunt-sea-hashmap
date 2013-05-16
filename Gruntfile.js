@@ -31,7 +31,6 @@ module.exports = function(grunt) {
         hashmap: {
             tests: {
                 options: {
-                    use_src: 'tmp/use.html',
                     build_dest: 'tmp/.build'
                 },
                 files: [
@@ -59,15 +58,15 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
-    grunt.registerTask('copyUse', 'Copy use.html for testing.', function() {
-        grunt.file.copy('test/fixtures/use.html', 'tmp/use.html');
-        grunt.log.write('Copy use.html to tmp...');
+    grunt.registerTask('copyConfig', 'Copy existed config file to tmp/ for testing.', function() {
+        grunt.file.copy('test/fixtures/map-config.js', 'tmp/map-config.js');
+        grunt.log.write('Copy map-config.js to tmp...');
         grunt.log.ok();
     });
 
     // Whenever the "test" task is run, first clean the "tmp" dir, then run this
     // plugin's task(s), then test the result.
-    grunt.registerTask('test', ['clean', 'copyUse', 'hashmap', 'nodeunit']);
+    grunt.registerTask('test', ['clean', 'copyConfig', 'hashmap', 'nodeunit']);
 
     // By default, lint and run all tests.
     grunt.registerTask('default', ['jshint', 'test']);

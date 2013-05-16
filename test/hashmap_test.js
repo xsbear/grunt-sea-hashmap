@@ -35,14 +35,5 @@ exports.hashmap = {
     test.equal(actual, expected, 'should describe what the default behavior is.');
 
     test.done();
-  },
-  usefile: function(test) {
-    test.expect(1);
-
-    var actual = grunt.file.read('tmp/use.html');
-    var expected = grunt.file.read('test/expected/use.html');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
-
-    test.done();
   }
 };

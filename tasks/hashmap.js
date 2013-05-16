@@ -22,10 +22,9 @@ module.exports = function(grunt) {
         var options = this.options({
             algorithm: 'md5',
             encoding: 'utf8',
-            map_tmpl: 'seajs.config({map: <%= mapArray %>});',
-            map_pattern: /[^"]+\?\w+/g,
-            use_pattern: /data-main="([^"]+)\?\w*"/,
-            use_replace: 'data-main="$1?{{hash}}"'
+            map_tpl: path.join(__dirname, 'map.tpl'),
+            MAP_BLOCK_RE: /\/\*map start\*\/[\s\S]*\/\*map end\*\//,
+            MAP_FILE_RE: /[^"]+\?\w+/g,
         });
 
         var done = this.async();
@@ -39,21 +38,23 @@ module.exports = function(grunt) {
             var encoding = options.encoding;
             var cwd = f.cwd;
             var mapping = [];
-            var originMaping = {};
+            var originMapping = {};
             var dest = f.dest;
+            var MAP_TPL = grunt.file.read(options.map_tpl);
 
             if (options.build_dest && grunt.file.exists(dest)) {
                 var mapContents = fs.readFileSync(dest, encoding);
-                var hashArr = mapContents.match(options.map_pattern);
-                for (var i = hashArr.length - 1; i >= 0; i--) {
-                    var item = hashArr[i].split('?');
-                    originMaping[item[0]] = item[1];
+                var hashArr = mapContents.match(options.MAP_FILE_RE);
+                if(hashArr !== null){
+                    for (var i = hashArr.length - 1; i >= 0; i--) {
+                        var item = hashArr[i].split('?');
+                        originMapping[item[0]] = item[1];
+                    }
                 }
             }
 
             var src = f.src.filter(function(filepath) {
                 filepath = realpath(filepath);
-
                 // Warn on and remove invalid source files (if nonull was set).
                 if (!grunt.file.exists(filepath)) {
                     grunt.log.warn('Source file "' + filepath + '" not found.');
@@ -62,12 +63,20 @@ module.exports = function(grunt) {
                     return true;
                 }
             });
+
             src.forEach(function(filepath) {
                 var r = realpath(filepath), d;
-                md5(r, function(d){
+
+                var shasum = crypto.createHash(options.algorithm);
+                var s = fs.ReadStream(r);
+                s.on('data', function(data) {
+                    shasum.update(data, encoding);
+                });
+                s.on('end', function() {
+                    d = shasum.digest('hex');
                     mapping.push([r, r + '?' + d]);
 
-                    if(options.build_dest && d !== originMaping[r]){
+                    if(options.build_dest && d !== originMapping[r]){
                         grunt.file.copy(r, path.join(options.build_dest, filepath));
                         grunt.log.oklns('File: "' + r + '"" copy to build dest.');
                     }
@@ -82,38 +91,18 @@ module.exports = function(grunt) {
                 return cwd ? path.join(cwd, filepath) : filepath;
             }
 
-            function md5(path, callback){
-                var shasum = crypto.createHash(options.algorithm);
-                if(callback === undefined){
-                    shasum.update(fs.readFileSync(String(path), encoding));
-                    return shasum.digest('hex');
-                } else {
-                    var s = fs.ReadStream(path);
-                    s.on('data', function(data) {
-                        shasum.update(data, encoding);
-                    });
-                    s.on('end', function() {
-                        callback(shasum.digest('hex'));
-                    });
-                }
-            }
-
             function output(){
-                var mapContents = grunt.template.process(options.map_tmpl, {data : {mapArray : JSON.stringify(mapping, 'null', '\t')}});
-                grunt.file.write(dest, mapContents);
-                grunt.log.oklns('Hash map config file: "' + dest + '" saved.');
-                done();
-                if(options.use_src){
-                    updateUseSrc();
+                var config = '';
+                if(grunt.file.exists(dest)){
+                    config = grunt.file.read(dest);
                 }
-            }
+                config = config.replace(options.MAP_BLOCK_RE, '').trim();
 
-            function updateUseSrc(){
-                var d = md5(dest);
-                var srcContents = fs.readFileSync(options.use_src, encoding);
-                srcContents = srcContents.replace(options.use_pattern, options.use_replace.replace('{{hash}}', d));
-                fs.writeFileSync(options.use_src, srcContents, encoding);
-                grunt.log.oklns('Use source file: "' + options.use_src + '" modified.');
+                config = grunt.template.process(MAP_TPL, {data : {mapArray : JSON.stringify(mapping, 'null', '\t')}}) + '\n' + config;
+                grunt.file.write(dest, config);
+
+                grunt.log.oklns('Hash map config write to file: "' + dest + '".');
+                done();
             }
         });
     });
