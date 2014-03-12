@@ -2,6 +2,8 @@
 
 > Generate a hash mapping for seajs modules when building, in order to burst cache.
 
+[![Build Status](https://travis-ci.org/xsbear/grunt-sea-hashmap.png?branch=master)](https://travis-ci.org/xsbear/grunt-sea-hashmap)
+
 ## Getting Started
 This plugin requires Grunt `~0.4.1`
 
