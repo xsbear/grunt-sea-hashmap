@@ -32,7 +32,7 @@ exports.hashmap = {
 
     var actual = grunt.file.read('tmp/map-config.js');
     var expected = grunt.file.read('test/expected/map-config.js');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
+    test.equal(actual, expected, 'task output should equal.');
 
     test.done();
   }

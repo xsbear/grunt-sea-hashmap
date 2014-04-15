@@ -5,7 +5,7 @@
 [![Build Status](https://travis-ci.org/xsbear/grunt-sea-hashmap.png?branch=master)](https://travis-ci.org/xsbear/grunt-sea-hashmap)
 
 ## Getting Started
-This plugin requires Grunt `~0.4.1`
+This plugin requires Grunt `~0.4.4`
 
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
@@ -102,7 +102,11 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-**May 16nd, 2013** `0.2.0`
+**Apr 15th, 2014** `0.2.1`
+
+Upgrade dependencies to newest version, minor fix.
+
+**May 16th, 2013** `0.2.0`
 
 Remove use_src option, just focus on generating hash map config.
 
