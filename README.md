@@ -76,6 +76,12 @@ Type: `String`
 Destination of moudle files which should to build.
 
 
+#### options.map_realpath
+Type: `bool`
+
+map里面的路径是否为实际路径，默认实际路径。
+
+
 ### Usage Examples
 
 
@@ -84,7 +90,8 @@ grunt.initConfig({
   hashmap: {
     tests: {
         options: {
-            build_dest: 'tmp/.build'
+            build_dest: 'tmp/.build',
+            map_build:false
         },
         files: [
           {
@@ -102,6 +109,10 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+**May 14th, 2014** `0.2.2`
+
+增加map_build参数，为false则map里面直接使用seajs的id，其他值或者不设置则为原来版本的样子。
+
 **Apr 15th, 2014** `0.2.1`
 
 Upgrade dependencies to newest version, minor fix.
